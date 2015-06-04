@@ -33,7 +33,6 @@ import java.util.TimerTask;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsPager;
-import kaaes.spotify.webapi.android.models.Image;
 
 public class SearchActivity extends AppCompatActivity implements TextWatcher, SpotifyArtistAdapter.SpotifyAdapterClickListener {
 
@@ -70,17 +69,8 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher, Sp
             int size = pArtists.length;
 
             List<Artist> artists = new ArrayList<>();
-            Artist temp;
-            Image tempImage;
             for(int i = 0; i < size; i++) {
-                temp = new Artist();
-                temp.name = pArtists[i].name;
-                temp.id = pArtists[i].id;
-                temp.images = new ArrayList<>();
-                tempImage = new Image();
-                tempImage.url = pArtists[i].imageUrl;
-                temp.images.add(tempImage);
-                artists.add(temp);
+                artists.add(pArtists[i].toArtist());
             }
 
             mAdapter.setArtists(artists);
@@ -94,10 +84,8 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher, Sp
         int size = artists.size();
 
         ParcelableArtist[] pArtists = new ParcelableArtist[size];
-        Artist temp;
         for(int i = 0; i < size; i++) {
-            temp = artists.get(i);
-            pArtists[i] = new ParcelableArtist(temp.name, temp.id, temp.images.size() > 0 ? temp.images.get(0).url : "");
+            pArtists[i] = ParcelableArtist.fromArtist(artists.get(i));
         }
 
         savedInstanceState.putParcelableArray(ARTIST_EXTRA_TAG, pArtists);

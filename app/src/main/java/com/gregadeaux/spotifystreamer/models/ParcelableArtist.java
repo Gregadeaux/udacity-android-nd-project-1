@@ -3,7 +3,10 @@ package com.gregadeaux.spotifystreamer.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 import kaaes.spotify.webapi.android.models.Artist;
+import kaaes.spotify.webapi.android.models.Image;
 
 /**
  * Created by greg on 6/3/15.
@@ -48,5 +51,20 @@ public class ParcelableArtist implements Parcelable {
         dest.writeString(name);
         dest.writeString(id);
         dest.writeString(imageUrl);
+    }
+
+    public Artist toArtist() {
+        Artist temp  = new Artist();
+        Image tempImage = new Image();
+        temp.name = this.name;
+        temp.id = this.id;
+        temp.images = new ArrayList<>();
+        tempImage.url = this.imageUrl;
+        temp.images.add(tempImage);
+        return temp;
+    }
+
+    public static ParcelableArtist fromArtist(Artist artist) {
+        return new ParcelableArtist(artist.name, artist.id, artist.images.size() > 0 ? artist.images.get(0).url : "");
     }
 }

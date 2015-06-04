@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.gregadeaux.spotifystreamer.R;
 import com.gregadeaux.spotifystreamer.adapters.SpotifyTrackAdapter;
 import com.gregadeaux.spotifystreamer.databinding.ActivityArtistBinding;
-import com.gregadeaux.spotifystreamer.models.ParcelableArtist;
 import com.gregadeaux.spotifystreamer.models.ParcelableTrack;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -26,9 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.models.Album;
-import kaaes.spotify.webapi.android.models.Artist;
-import kaaes.spotify.webapi.android.models.Image;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.Tracks;
 
@@ -61,18 +57,8 @@ public class ArtistActivity extends AppCompatActivity {
             int size = pTracks.length;
 
             List<Track> artists = new ArrayList<>();
-            Track temp;
-            Image tempImage;
             for(int i = 0; i < size; i++) {
-                temp = new Track();
-                temp.name = pTracks[i].name;
-                temp.album = new Album();
-                temp.album.name = pTracks[i].album;
-                temp.album.images = new ArrayList<>();
-                tempImage = new Image();
-                tempImage.url = pTracks[i].imageUrl;
-                temp.album.images.add(tempImage);
-                artists.add(temp);
+                artists.add(pTracks[i].toTrack());
             }
 
             mAdapter.setTracks(artists);
@@ -88,10 +74,8 @@ public class ArtistActivity extends AppCompatActivity {
         int size = tracks.size();
 
         ParcelableTrack[] pTracks = new ParcelableTrack[size];
-        Track temp;
         for(int i = 0; i < size; i++) {
-            temp = tracks.get(i);
-            pTracks[i] = new ParcelableTrack(temp.name, temp.album.name, temp.album.images.size() > 0 ? temp.album.images.get(0).url : "");
+            pTracks[i] = ParcelableTrack.fromTrack(tracks.get(i));
         }
 
         savedInstanceState.putParcelableArray(TRACK_EXTRA_TAG, pTracks);
