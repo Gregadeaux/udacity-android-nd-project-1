@@ -127,7 +127,8 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher, Sp
         @Override
         protected void onPostExecute(ArtistsPager result) {
             dialog.hide();
-            if(result == null || result.artists.items.size() < 0) {
+
+            if(result == null || result.artists.items.size() == 0) {
                 Toast.makeText(context, "No results were found", Toast.LENGTH_LONG).show();
             }else {
                 adapter.setArtists(result.artists.items);

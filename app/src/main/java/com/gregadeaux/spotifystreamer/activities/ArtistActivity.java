@@ -83,7 +83,7 @@ public class ArtistActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Tracks result) {
             dialog.hide();
-            if(result == null || result.tracks.size() < 0) {
+            if(result == null || result.tracks.size() == 0) {
                 Toast.makeText(context, "No results were found", Toast.LENGTH_LONG).show();
             }else {
                 adapter.setTracks(result.tracks);
