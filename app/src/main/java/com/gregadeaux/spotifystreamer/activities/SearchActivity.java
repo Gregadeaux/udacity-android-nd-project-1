@@ -21,15 +21,19 @@ import android.widget.Toast;
 import com.gregadeaux.spotifystreamer.R;
 import com.gregadeaux.spotifystreamer.adapters.SpotifyArtistAdapter;
 import com.gregadeaux.spotifystreamer.databinding.ActivitySearchBinding;
+import com.gregadeaux.spotifystreamer.models.ParcelableArtist;
 
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsPager;
+import kaaes.spotify.webapi.android.models.Image;
 
 public class SearchActivity extends AppCompatActivity implements TextWatcher, SpotifyArtistAdapter.SpotifyAdapterClickListener {
 
@@ -60,6 +64,43 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher, Sp
 
         textWaitTimer = new Timer();
         api = new SpotifyApi();
+
+        if(savedInstanceState != null) {
+            ParcelableArtist[] pArtists = (ParcelableArtist[]) savedInstanceState.getParcelableArray(ARTIST_EXTRA_TAG);
+            int size = pArtists.length;
+
+            List<Artist> artists = new ArrayList<>();
+            Artist temp;
+            Image tempImage;
+            for(int i = 0; i < size; i++) {
+                temp = new Artist();
+                temp.name = pArtists[i].name;
+                temp.id = pArtists[i].id;
+                temp.images = new ArrayList<>();
+                tempImage = new Image();
+                tempImage.url = pArtists[i].imageUrl;
+                temp.images.add(tempImage);
+                artists.add(temp);
+            }
+
+            mAdapter.setArtists(artists);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        List<Artist> artists = mAdapter.getArtists();
+        int size = artists.size();
+
+        ParcelableArtist[] pArtists = new ParcelableArtist[size];
+        Artist temp;
+        for(int i = 0; i < size; i++) {
+            temp = artists.get(i);
+            pArtists[i] = new ParcelableArtist(temp.name, temp.id, temp.images.size() > 0 ? temp.images.get(0).url : "");
+        }
+
+        savedInstanceState.putParcelableArray(ARTIST_EXTRA_TAG, pArtists);
     }
 
     @Override
@@ -129,7 +170,7 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher, Sp
             dialog.hide();
 
             if(result == null || result.artists.items.size() == 0) {
-                Toast.makeText(context, "No results were found", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "No results were found. Please refine your search", Toast.LENGTH_LONG).show();
             }else {
                 adapter.setArtists(result.artists.items);
                 adapter.notifyDataSetChanged();

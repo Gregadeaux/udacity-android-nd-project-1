@@ -33,6 +33,10 @@ public class SpotifyTrackAdapter extends RecyclerView.Adapter<SpotifyTrackAdapte
         return this.trackList.addAll(trackList);
     }
 
+    public List<Track> getTracks() {
+        return this.trackList;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context)

@@ -38,6 +38,10 @@ public class SpotifyArtistAdapter extends RecyclerView.Adapter<SpotifyArtistAdap
         return this.artists.addAll(artists);
     }
 
+    public List<Artist> getArtists() {
+        return this.artists;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
@@ -59,7 +63,7 @@ public class SpotifyArtistAdapter extends RecyclerView.Adapter<SpotifyArtistAdap
             }
         });
 
-        if(artist.images.size() > 0) {
+        if(artist.images.size() > 0 && !artist.images.get(0).url.equals("")) {
             Picasso.with(context)
                     .load(artist.images.get(0).url)
                     .resize(150,150)
