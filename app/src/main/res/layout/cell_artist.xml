@@ -16,15 +16,10 @@
             android:padding="10dp">
             <ImageView
                 android:id="@+id/cell_artist_image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"/>
+                style="@style/ImageTheme"/>
             <TextView
                 android:id="@+id/cell_artist_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
+                style="@style/TextTheme"
                 android:text="@{artist.name}"
                 android:textSize="18sp"/>
         </LinearLayout>

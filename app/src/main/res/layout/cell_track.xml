@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="track" type="kaaes.spotify.webapi.android.models.Track"/>
+    </data>
+    <android.support.v7.widget.CardView
+        android:id="@+id/cell_track_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:listPreferredItemHeight"
+        android:clickable="true">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            <ImageView
+                android:id="@+id/cell_track_image"
+                style="@style/ImageTheme"/>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/cell_track_name"
+                    style="@style/TextTheme"
+                    android:text="@{track.name}"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/cell_track_album"
+                    style="@style/TextTheme"
+                    android:text="@{track.album.name}"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>
